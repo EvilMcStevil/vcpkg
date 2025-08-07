@@ -70,7 +70,6 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     zstd    USE_ZSTD
     fbgemm  USE_FBGEMM
     opencv  USE_OPENCV
-    openmp  USE_OPENMP
     opencl  USE_OPENCL
     mkldnn  USE_MKLDNN
     cuda    USE_CUDA
