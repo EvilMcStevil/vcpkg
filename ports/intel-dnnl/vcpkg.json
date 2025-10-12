@@ -1,0 +1,8 @@
+{
+  "name": "intel-dnnl",
+  "version": "2025.2.0",
+  "description": "Intel® oneAPI Deep Neural Network Library (oneDNN)",
+  "homepage": "https://www.intel.com/content/www/us/en/developer/tools/oneapi/onednn.html",
+  "license": null,
+  "supports": "(windows | linux) & x64"
+}
