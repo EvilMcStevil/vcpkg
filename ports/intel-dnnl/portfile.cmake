@@ -61,6 +61,10 @@ file(MAKE_DIRECTORY "${CURRENT_PACKAGES_DIR}/lib/pkgconfig")
 
 message(STATUS "Extracting offline installer")
 
+list(APPEND EXTRACT_PATHS "_installdir/dnnl/${dnnl_short_version}/share"
+        "_installdir/dnnl/${dnnl_short_version}/include"
+        "_installdir/dnnl/${dnnl_short_version}/lib")
+
 if(VCPKG_TARGET_IS_WINDOWS)
   vcpkg_find_acquire_program(7Z)
   vcpkg_execute_required_process(
@@ -68,6 +72,7 @@ if(VCPKG_TARGET_IS_WINDOWS)
       WORKING_DIRECTORY "${extract_0_dir}"
       LOGNAME "extract-${TARGET_TRIPLET}-0"
   )
+  list(APPEND EXTRACT_PATHS "_installdir/dnnl/${dnnl_short_version}/bin")
 endif()
 
 if(VCPKG_TARGET_IS_LINUX)
@@ -86,16 +91,14 @@ cmake_path(GET package_path STEM LAST_ONLY packstem)
 message(STATUS "Extracting ${packstem}")
 vcpkg_execute_required_process(
     COMMAND "${CMAKE_COMMAND}" "-E" "tar" "-xf" "${package_path}/cupPayload.cup"
-        "_installdir/dnnl/${dnnl_short_version}/share"
-        "_installdir/dnnl/${dnnl_short_version}/include"
-        "_installdir/dnnl/${dnnl_short_version}/lib"
-        "_installdir/dnnl/${dnnl_short_version}/bin"
+        ${EXTRACT_PATHS}
     WORKING_DIRECTORY "${extract_1_dir}"
     LOGNAME "extract-${TARGET_TRIPLET}-${packstem}"
 )
 
 set(dnnl_dir "${extract_1_dir}/_installdir/dnnl/${dnnl_short_version}")
 file(COPY "${dnnl_dir}/include/" DESTINATION "${CURRENT_PACKAGES_DIR}/include")
+
 
 file(GLOB debug_lib_files "${dnnl_dir}/lib/*d\.*")
 MESSAGE(STATUS "debug_lib_files = ${debug_lib_files}")
@@ -104,8 +107,10 @@ list(REMOVE_ITEM lib_files ${debug_lib_files})
 MESSAGE(STATUS "lib_files = ${lib_files}")
 
 
+if(debug_lib_files)
 file(COPY ${debug_lib_files} DESTINATION "${CURRENT_PACKAGES_DIR}/lib/debug")
-file(COPY "${lib_files}" DESTINATION "${CURRENT_PACKAGES_DIR}/lib")
+endif()
+file(COPY ${lib_files} DESTINATION "${CURRENT_PACKAGES_DIR}/lib")
 
 if(VCPKG_TARGET_IS_WINDOWS)
 file(GLOB debug_bin_files "${dnnl_dir}/bin/*d\.*")
@@ -114,7 +119,7 @@ file(GLOB bin_files "${dnnl_dir}/bin/*.*")
 list(REMOVE_ITEM bin_files ${debug_bin_files})
 MESSAGE(STATUS "bin_files = ${bin_files}")
 file(COPY ${debug_bin_files} DESTINATION "${CURRENT_PACKAGES_DIR}/bin/debug")
-file(COPY "${bin_files}" DESTINATION "${CURRENT_PACKAGES_DIR}/bin")
+file(COPY ${bin_files} DESTINATION "${CURRENT_PACKAGES_DIR}/bin")
 endif()
 
 
@@ -127,9 +132,9 @@ vcpkg_install_copyright(FILE_LIST "${dnnl_dir}/share/doc/dnnl/LICENSE")
 
 
 
-#file(REMOVE_RECURSE
-#    "${extract_0_dir}"
-#    "${extract_1_dir}"
-#)
+file(REMOVE_RECURSE
+   "${extract_0_dir}"
+   "${extract_1_dir}"
+)
 
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/usage" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
