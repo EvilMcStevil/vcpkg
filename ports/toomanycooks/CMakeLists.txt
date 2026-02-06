@@ -55,8 +55,6 @@ find_package(mimalloc CONFIG REQUIRED)
 
 
 
-find_package(Boost REQUIRED COMPONENTS asio)
-
 
 ##### TMC build-time options #####
 
@@ -64,23 +62,10 @@ add_library(tmc STATIC
     tmc_build.cpp)
 
 
-target_compile_definitions(tmc PUBLIC TMC_USE_BOOST_ASIO
-
-
-    # Performance tuning options
-    # "-DTMC_WORK_ITEM=CORO" # one of: CORO, FUNC, FUNCORO
-    # "-DTMC_TRIVIAL_TASK" # enabled in this repo for Release builds via CMakePresets.json
-    # "-DTMC_PRIORITY_COUNT=1" # unsigned integer between 1 and 63
-
-    # Debug / diagnostics options
-    # tracks the number of tmc::task allocations which lets you determine
-    # how effectively Heap Allocation Elision (HALO) is being applied by the compiler
-    # "-DTMC_DEBUG_TASK_ALLOC_COUNT"
-)
 
 target_include_directories(tmc SYSTEM PUBLIC ${LIBHWLOC_INCLUDE_DIR})
 target_include_directories(tmc PRIVATE include)
-target_link_libraries(tmc PUBLIC mimalloc Boost::asio ${LIBHWLOC_LIBRARY})
+target_link_libraries(tmc PUBLIC mimalloc ${LIBHWLOC_LIBRARY})
 
 # Add header files for IDE support
 target_sources(tmc
