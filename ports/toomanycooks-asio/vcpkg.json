@@ -1,0 +1,20 @@
+{
+  "name": "toomanycooks-asio",
+  "version": "1.4",
+  "homepage": "https://github.com/tzcnt/tmc-asio",
+  "description": "TooManyCooks is a runtime and concurrency library for C++20 coroutines, this adds boost asio support",
+  "license": "BSL-1.0",
+  "dependencies": [
+    "toomanycooks",
+    "boost-asio",
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ],
+  "default-features": []
+}

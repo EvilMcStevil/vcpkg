@@ -1,0 +1,27 @@
+{
+  "name": "toomanycooks",
+  "version": "1.4",
+  "homepage": "https://github.com/tzcnt/TooManyCooks",
+  "description": "TooManyCooks is a runtime and concurrency library for C++20 coroutines",
+  "license": "BSL-1.0",
+  "dependencies": [
+    "hwloc",
+    "mimalloc",
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ],
+
+  "default-features": [],
+  "features": {
+    "example-feature": {
+      "description": "",
+      "dependencies": []
+    }
+  }
+}
